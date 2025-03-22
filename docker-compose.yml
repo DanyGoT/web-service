@@ -31,12 +31,12 @@ services:
     networks:
       - db
 
-  ngingx:
+  nginx:
     image: nginx:alpine
     container_name: nginx-proxy
     restart: always
     volumes:
-      - ./proxy/ngingx.conf:/etc/nginx/nginx.conf:ro
+      - ./proxy/nginx.conf:/etc/nginx/nginx.conf:ro
       # - ${NGINX_CONFIG_PATH_REMOTE}:/etc/nginx/nginx.conf:ro
     ports:
       - "80:80"
