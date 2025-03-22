@@ -1,0 +1,54 @@
+services:
+  web:
+    build: ./web
+    container_name: solid-web
+    restart: always
+    networks:
+      - proxy
+
+  api:
+    build: ./api/MyAPI
+    container_name: minimal-api
+    restart: always
+    depends_on:
+      - postgres
+    environment:
+      - ConnectionStrings_DeaultConnection=Host=postgres;Database=${POSTGRES_DB:-mydb};Username=${POSTGRES_USERNAME:-myuser};Password=${POSTGRES_PASSWORD:-mypass}
+    networks:
+      - proxy
+      - db
+
+  postgres:
+    image: postgres:17.4
+    container_name: postgres-db
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USERNAME:-myuser}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-mypass}
+      POSTGRES_DB: ${POSTGRES_DB:-mydb}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - db
+
+  ngingx:
+    image: nginx:alpine
+    container_name: nginx-proxy
+    restart: always
+    volumes:
+      - ./proxy/ngingx.conf:/etc/nginx/nginx.conf:ro
+      # - ${NGINX_CONFIG_PATH_REMOTE}:/etc/nginx/nginx.conf:ro
+    ports:
+      - "80:80"
+    depends_on:
+      - web
+      - api
+    networks:
+      - proxy
+
+volumes:
+  postgres-data:
+
+networks:
+  proxy:
+  db:
