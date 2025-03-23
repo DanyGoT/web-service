@@ -101,3 +101,5 @@ dist-ssr
 *.sln
 *.sw?
 *.v2
+
+api/MyAPI/Migrations
