@@ -100,3 +100,4 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+*.v2
