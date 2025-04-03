@@ -2,10 +2,20 @@ services:
   web:
     build: ./web
     container_name: solid-web
+    # TODO: V Enable hot-reload V (commented part works only for pre-build configurations)
+    # https://docs.docker.com/compose/how-tos/file-watch/
+    develop:
+      watch:
+        - action: sync
+          path: ./web
+          target: /app
+          ignore:
+            - ./web/node_modules/
     restart: always
     networks:
       - proxy
 
+# TODO: V Enable hot-reload V
   api:
     build: 
       context: ./api/MyAPI
@@ -51,6 +61,8 @@ services:
       - api
     networks:
       - proxy
+
+# TODO: Create Identity Server for authentication/authorization
 
 volumes:
   postgres-data:

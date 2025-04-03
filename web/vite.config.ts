@@ -3,4 +3,10 @@ import solid from 'vite-plugin-solid'
 
 export default defineConfig({
   plugins: [solid()],
+  server: {
+    port: 80,
+    watch: {
+      usePolling: true
+    }
+  }
 })
